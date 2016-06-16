@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+<title>webrx-title</title>
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="简介">
+<meta name="keywords" content="关键字">
+<style>
+*{ margin:0; padding: 0; box-sizing:border-box;};
+	.cale{width: 100vw;height: 100vh;}
+	.showbox {width: 100vw;height: 30vh;display: flex;background-color: rgb(227,231,234); }
+	.showbox input{flex:1; background-color: transparent; border:none; font-size: 7vw; padding:7vw;}
+
+	.buttons{width: 100vw;display: flex; flex-wrap:wrap; flex-direction:row;}
+	.buttons input{height: 25vw;flex:0 0 25vw;font-size: 7vw;}
+	.buttons .grow2{flex:0 1 50vw;}
+	.buttons .equal{height: 50vw;margin-top:-25vw;background-color:  #fa742d;color: #ffffff;}
+	 @media screen and (min-width:768px){
+    	.calc .showbox{ height: 70vh;}
+    	.calc{transform:scale(0.3,0.3); transform-origin:0 0;}
+    }
+</style>
+</head>
+<body>
+	<div class="calc">
+		<div class="showbox">
+			<input type="text" id="show" disabled="displayed">
+		</div>
+		<div class="buttons">
+		
+			<input type="button" value="c" name="butt" id="cle">
+			<input type="button" value="←" name="butt" id="del">
+			<input type="button" value="÷" name="butt2"id="ride">
+			<input type="button" value="×" name="butt2"id="remove">
+		
+			<input type="button" value="7" name="butt">
+			<input type="button" value="8" name="butt">
+			<input type="button" value="9" name="butt">
+			<input type="button" value="-" name="butt2" id=""cut>
+		
+			<input type="button" value="4" name="butt">
+			<input type="button" value="5" name="butt">
+			<input type="button" value="6" name="butt">
+			<input type="button" value="+" name="butt2" id=""add>
+		
+			<input type="button" value="1" name="butt">
+			<input type="button" value="2" name="butt">
+			<input type="button" value="3" name="butt">
+
+		
+			<input type="button" value="0" class="grow2"id="zero">
+			<input type="button" value="." name="butt2"id="dot">
+			<input type="button" value="=" name="butt" class="equal" id="equal">
+		</div>
+	</div>
+	<script>
+
+	var show=document.getElementById("show");
+	var buttons=document.getElementsByName("butt")
+	var zero=document.getElementById("zero")
+	var butt2=document.getElementsByName("butt2")
+	var cle=document.getElementById("cle");
+	var del=document.getElementById("del");
+	var equal=document.getElementById("equal")
+
+	var isfirst=true;
+
+	for (var i = buttons.length - 1; i >= 0; i--) {
+		buttons[i].onclick=function(){
+			if ((this.value)!="c"&&(this.value)!="←"&&(this.value)!="=") {
+				show.value=show.value+this.value;
+				isfirst=false;
+				}	
+			}
+		}
+	for (var a = butt2.length - 1; a >= 0; a--) {
+		butt2[a].onclick=function(){
+			if (isfirst) {
+			show.value="0"+this.value;
+			isfirst=false;
+		}else{
+			var len=show.value.length;
+			var m=show.value.substring(len-1,len);
+			if (m!="+"&&m!="-"&&m!="×"&&m!="÷"&&m!=".") {
+				show.value=show.value+this.value
+			}	
+		  }
+		}
+	 };
+	zero.onclick=function(){
+		if (isfirst){
+ 		show.value=0;
+		}else{
+			show.value=show.value+this.value
+		}
+		
+	}
+	cle.onclick=function(){
+		show.value="";
+		isfirst=true;
+
+	}
+	del.onclick=function(){
+
+		var len=show.value.length;
+		if (len>1) {
+		show.value=show.value.substring(0,len-1);	
+	}else{
+		show.value="";
+		isfirst=true;
+	}
+		
+
+	}
+	equal.onclick=function(){
+		if (!isfirst) {
+		var reg1=/÷/g;
+		var reg2=/×/g;
+		show.value=show.value.replace(reg1,"/");
+		show.value=show.value.replace(reg2,"*");
+
+		var len=show.value.length;
+		
+		if (len>2) {
+			var last2=show.value.substring(len-2,len);
+			if (last2=="/0") {
+			show.value="0不能做被除数";
+			}else{show.value=eval(show.value);}
+		 }else{
+		 	show.value=show.value.substring(0,1);
+		 }
+		}
+	}
+	</script>
+</body>
+</html>
